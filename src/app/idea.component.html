@@ -1,0 +1,106 @@
+<h3 *ngIf="ideaIdToUpdate; else create"> 
+   Update Idea for Id: {{ideaIdToUpdate}}
+</h3>
+<ng-template #create>
+   <h3> Create New Idea </h3>
+</ng-template>
+<div>
+ <form [formGroup]="ideaForm" (ngSubmit)="onIdeaFormSubmit()">
+  <table>
+    <tr><td>Enter Problem Statement</td><td><input formControlName="problemStatement">
+	       <label *ngIf="ideaForm.get('problemStatement').invalid && processValidation" [ngClass] = "'error'"> Problem Statement is required. </label>
+   	</td></tr>
+    <tr><td>Enter Solution Proposed</td><td><input formControlName="solutionProposed">
+	       <label *ngIf="ideaForm.get('solutionProposed').invalid && processValidation" [ngClass] = "'error'"> Solution Proposed is required. </label>
+	</td></tr>
+	<tr><td>Enter High Level Design</td><td><input formControlName="highLevelDesign">
+	       <label *ngIf="ideaForm.get('highLevelDesign').invalid && processValidation" [ngClass] = "'error'"> High Level Design is required. </label>
+	</td></tr>	
+	<tr><td>Enter Skills Required</td><td><input formControlName="skillsRequired">
+	       <label *ngIf="ideaForm.get('skillsRequired').invalid && processValidation" [ngClass] = "'error'"> Skills Required is required. </label>
+	</td></tr>	
+	<tr><td>Enter Tools Required</td><td><input formControlName="toolRequired">
+	       <label *ngIf="ideaForm.get('toolRequired').invalid && processValidation" [ngClass] = "'error'"> Tools Required is required. </label>
+	</td></tr>	
+	<tr><td>Enter Dependencies</td><td><input formControlName="dependencies">
+	       <label *ngIf="ideaForm.get('dependencies').invalid && processValidation" [ngClass] = "'error'"> Dependencies is required. </label>
+	</td></tr>	
+	<tr><td>Enter Benefits and Impact</td><td><input formControlName="benefitAndImpact">
+	       <label *ngIf="ideaForm.get('benefitAndImpact').invalid && processValidation" [ngClass] = "'error'"> Benefits and Impact is required. </label>
+	</td></tr>	
+	<tr><td>Enter Priority</td><td><input formControlName="priority">
+	       <label *ngIf="ideaForm.get('priority').invalid && processValidation" [ngClass] = "'error'"> Priority is required. </label>
+	</td></tr>	
+	<tr><td>Enter Manual Effort Spent</td><td><input formControlName="manualEffortSpent">
+	       <label *ngIf="ideaForm.get('manualEffortSpent').invalid && processValidation" [ngClass] = "'error'"> Manual Effort Spent is required. </label>
+	</td></tr>	
+	<tr><td>Enter performedFrequency</td><td><input formControlName="performedFrequency">
+	       <label *ngIf="ideaForm.get('performedFrequency').invalid && processValidation" [ngClass] = "'error'"> performedFrequency is required. </label>
+	</td></tr>	
+	<tr><td>Enter Executions</td><td><input formControlName="executions">
+	       <label *ngIf="ideaForm.get('executions').invalid && processValidation" [ngClass] = "'error'"> Executions is required. </label>
+	</td></tr>	
+	<tr><td>Enter Total Hours Per Month</td><td><input formControlName="totalHoursPerMonth">
+	       <label *ngIf="ideaForm.get('totalHoursPerMonth').invalid && processValidation" [ngClass] = "'error'"> Total Hours Per Month is required. </label>
+	</td></tr>	
+	<tr><td>Enter SME Contact Phone</td><td><input formControlName="smeContactPhone">
+	       <label *ngIf="ideaForm.get('smeContactPhone').invalid && processValidation" [ngClass] = "'error'"> SME Contact Phone is required. </label>
+	</td></tr>	
+	<tr><td>Enter SME Contact Mail</td><td><input formControlName="smeContactMail">
+	       <label *ngIf="ideaForm.get('smeContactMail').invalid && processValidation" [ngClass] = "'error'"> SME Contact Mail is required. </label>
+	</td></tr>
+		
+    <tr><td colspan="2">
+	    <button *ngIf="!ideaIdToUpdate">CREATE</button>  
+		<button *ngIf="ideaIdToUpdate">UPDATE</button>  
+	    <button (click)="backToCreateIdea()" *ngIf="ideaIdToUpdate">Go Back</button>  
+	</td></tr>
+  </table>
+ </form> 
+ <br/>
+ <div *ngIf="statusCode; else processing">
+   <div *ngIf="statusCode === 201" [ngClass] = "'success'">
+	    Idea added successfully.
+   </div>   
+   <div *ngIf="statusCode === 409" [ngClass] = "'success'">
+        Idea already exists.
+   </div>   	
+   <div *ngIf="statusCode === 200" [ngClass] = "'success'">
+        Idea updated successfully.
+   </div>   	      
+   <div *ngIf="statusCode === 204" [ngClass] = "'success'">
+        Idea deleted successfully.
+   </div>   	   
+   <div *ngIf="statusCode === 500" [ngClass] = "'error'">
+        Internal Server Error.
+   </div>   	
+ </div>
+ <ng-template #processing>
+	<img *ngIf="requestProcessing" src="assets/images/loading.gif">
+ </ng-template>
+</div>
+<h3>Idea Details</h3>
+<table>
+  <tr>
+  <th> Id</th> <th>Problem Statement</th><th>Solution Proposed</th>  
+  <th>High Level Design</th><th>Skills Required</th>
+  <th>Tools Required</th><th>Dependencies</th>
+  <th>Benefits and Impact</th><th>Priority</th>
+  <th>Manual Effort Spent</th><th>Performed Frequency</th>
+  <th>Executions</th><th>Total Hours Per Month</th>
+  <th>SME Contact Phone</th><th>SME Contact Mail</th>  
+  <th></th><th></th></tr>
+  <tr *ngFor="let idea of allIdeas" >
+    <td>{{idea.ideaId}}</td> 
+    <td>{{idea.problemStatement}}</td> <td>{{idea.solutionProposed}}</td>
+    <td>{{idea.highLevelDesign}}</td> <td>{{idea.skillsRequired}}</td>
+    <td>{{idea.toolRequired}}</td> <td>{{idea.dependencies}}</td>
+    <td>{{idea.benefitAndImpact}}</td> <td>{{idea.priority}}</td>
+    <td>{{idea.manualEffortSpent}}</td> <td>{{idea.performedFrequency}}</td>
+    <td>{{idea.executions}}</td> <td>{{idea.totalHoursPerMonth}}</td>
+    <td>{{idea.smeContactPhone}}</td> <td>{{idea.smeContactMail}}</td>   
+	<td><button type="button" (click)="loadIdeaToEdit(idea.ideaId)">Edit</button> </td> 
+	<td><button type="button" (click)="deleteIdea(idea.ideaId)">Delete</button></td>
+  </tr>
+</table>
+<br/>
